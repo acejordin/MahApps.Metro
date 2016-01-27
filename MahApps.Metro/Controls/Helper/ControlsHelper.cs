@@ -5,6 +5,9 @@ using System.Windows.Media;
 
 namespace MahApps.Metro.Controls
 {
+    using System.ComponentModel;
+    using System.Windows.Controls.Primitives;
+
     /// <summary>
     /// A helper class that provides various controls.
     /// </summary>
@@ -15,9 +18,9 @@ namespace MahApps.Metro.Controls
         /// <summary>
         /// Gets the value to handle the visibility of the DisabledVisualElement in the template.
         /// </summary>
-        [AttachedPropertyBrowsableForType(typeof(TextBox))]
+        [Category(AppName.MahApps)]
+        [AttachedPropertyBrowsableForType(typeof(TextBoxBase))]
         [AttachedPropertyBrowsableForType(typeof(PasswordBox))]
-        [AttachedPropertyBrowsableForType(typeof(RichTextBox))]
         [AttachedPropertyBrowsableForType(typeof(NumericUpDown))]
         public static Visibility GetDisabledVisualElementVisibility(UIElement element)
         {
@@ -32,26 +35,36 @@ namespace MahApps.Metro.Controls
             element.SetValue(DisabledVisualElementVisibilityProperty, value);
         }
 
-        public static readonly DependencyProperty PreserveTextCaseProperty = DependencyProperty.RegisterAttached("PreserveTextCase", typeof(bool), typeof(ControlsHelper), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits | FrameworkPropertyMetadataOptions.AffectsMeasure));
+        /// <summary>
+        /// The DependencyProperty for the CharacterCasing property.
+        /// Controls whether or not content is converted to upper or lower case
+        /// </summary>
+        public static readonly DependencyProperty ContentCharacterCasingProperty =
+            DependencyProperty.RegisterAttached(
+                "ContentCharacterCasing",
+                typeof (CharacterCasing),
+                typeof (ControlsHelper),
+                new FrameworkPropertyMetadata(CharacterCasing.Normal, FrameworkPropertyMetadataOptions.AffectsMeasure),
+                new ValidateValueCallback(value => CharacterCasing.Normal <= (CharacterCasing) value && (CharacterCasing) value <= CharacterCasing.Upper));
 
         /// <summary>
-        /// Gets the value to override the text case behavior for the header content.
-        /// When set to <c>true</c>, the text case will be preserved and won't be changed to upper or lower case.
+        /// Gets the character casing of the control
         /// </summary>
-        [AttachedPropertyBrowsableForType(typeof(Expander))]
-        [AttachedPropertyBrowsableForType(typeof(GroupBox))]
-        public static bool GetPreserveTextCase(UIElement element)
+        [Category(AppName.MahApps)]
+        [AttachedPropertyBrowsableForType(typeof(ContentControl))]
+        [AttachedPropertyBrowsableForType(typeof(DropDownButton))]
+        [AttachedPropertyBrowsableForType(typeof(WindowCommands))]
+        public static CharacterCasing GetContentCharacterCasing(UIElement element)
         {
-            return (bool)element.GetValue(PreserveTextCaseProperty);
+            return (CharacterCasing)element.GetValue(ContentCharacterCasingProperty);
         }
 
         /// <summary>
-        /// Sets the value to override the text case behavior for the header content.
-        /// When set to <c>true</c>, the text case will be preserved and won't be changed to upper or lower case.
+        /// Sets the character casing of the control
         /// </summary>
-        public static void SetPreserveTextCase(UIElement element, bool value)
+        public static void SetContentCharacterCasing(UIElement element, CharacterCasing value)
         {
-            element.SetValue(PreserveTextCaseProperty, value);
+            element.SetValue(ContentCharacterCasingProperty, value);
         }
 
         public static readonly DependencyProperty HeaderFontSizeProperty =
@@ -91,6 +104,7 @@ namespace MahApps.Metro.Controls
             }
         }
 
+        [Category(AppName.MahApps)]
         [AttachedPropertyBrowsableForType(typeof(MetroTabItem))]
         [AttachedPropertyBrowsableForType(typeof(TabItem))]
         [AttachedPropertyBrowsableForType(typeof(GroupBox))]
@@ -107,6 +121,7 @@ namespace MahApps.Metro.Controls
         public static readonly DependencyProperty HeaderFontStretchProperty =
             DependencyProperty.RegisterAttached("HeaderFontStretch", typeof(FontStretch), typeof(ControlsHelper), new UIPropertyMetadata(FontStretches.Normal));
 
+        [Category(AppName.MahApps)]
         [AttachedPropertyBrowsableForType(typeof(MetroTabItem))]
         [AttachedPropertyBrowsableForType(typeof(TabItem))]
         [AttachedPropertyBrowsableForType(typeof(GroupBox))]
@@ -123,6 +138,7 @@ namespace MahApps.Metro.Controls
         public static readonly DependencyProperty HeaderFontWeightProperty =
             DependencyProperty.RegisterAttached("HeaderFontWeight", typeof(FontWeight), typeof(ControlsHelper), new UIPropertyMetadata(FontWeights.Normal));
 
+        [Category(AppName.MahApps)]
         [AttachedPropertyBrowsableForType(typeof(MetroTabItem))]
         [AttachedPropertyBrowsableForType(typeof(TabItem))]
         [AttachedPropertyBrowsableForType(typeof(GroupBox))]
@@ -145,6 +161,7 @@ namespace MahApps.Metro.Controls
             DependencyProperty.RegisterAttached("ButtonWidth", typeof(double), typeof(ControlsHelper),
                                                 new FrameworkPropertyMetadata(22d, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.Inherits));
 
+        [Category(AppName.MahApps)]
         public static double GetButtonWidth(DependencyObject obj)
         {
             return (double)obj.GetValue(ButtonWidthProperty);
@@ -169,6 +186,7 @@ namespace MahApps.Metro.Controls
         /// <summary>
         /// Gets the brush used to draw the focus border.
         /// </summary>
+        [Category(AppName.MahApps)]
         [AttachedPropertyBrowsableForType(typeof(TextBox))]
         [AttachedPropertyBrowsableForType(typeof(CheckBox))]
         [AttachedPropertyBrowsableForType(typeof(RadioButton))]
@@ -190,6 +208,7 @@ namespace MahApps.Metro.Controls
         /// <summary>
         /// Gets the brush used to draw the mouse over brush.
         /// </summary>
+        [Category(AppName.MahApps)]
         [AttachedPropertyBrowsableForType(typeof(TextBox))]
         [AttachedPropertyBrowsableForType(typeof(CheckBox))]
         [AttachedPropertyBrowsableForType(typeof(RadioButton))]
@@ -199,6 +218,32 @@ namespace MahApps.Metro.Controls
         public static Brush GetMouseOverBorderBrush(DependencyObject obj)
         {
             return (Brush)obj.GetValue(MouseOverBorderBrushProperty);
+        }
+
+        /// <summary>
+        /// DependencyProperty for <see cref="CornerRadius" /> property.
+        /// </summary>
+        public static readonly DependencyProperty CornerRadiusProperty
+            = DependencyProperty.RegisterAttached("CornerRadius", typeof(CornerRadius), typeof(ControlsHelper),
+                                                  new FrameworkPropertyMetadata(
+                                                      new CornerRadius(),
+                                                      FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
+
+        /// <summary> 
+        /// The CornerRadius property allows users to control the roundness of the button corners independently by 
+        /// setting a radius value for each corner. Radius values that are too large are scaled so that they
+        /// smoothly blend from corner to corner. (Can be used e.g. at MetroButton style)
+        /// Description taken from original Microsoft description :-D
+        /// </summary>
+        [Category(AppName.MahApps)]
+        public static CornerRadius GetCornerRadius(UIElement element)
+        {
+            return (CornerRadius)element.GetValue(CornerRadiusProperty);
+        }
+
+        public static void SetCornerRadius(UIElement element, CornerRadius value)
+        {
+            element.SetValue(CornerRadiusProperty, value);
         }
     }
 }

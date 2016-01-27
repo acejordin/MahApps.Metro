@@ -32,6 +32,15 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.StatusBar.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <Style x:Key="FloatingMessageContainerStyle" TargetType="{x:Type ContentControl}">
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="MaxHeight" Value="0" />
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="Margin" Value="5 0" />
+        <Setter Property="Visibility" Value="Visible" />
+    </Style>
+
     <Style x:Key="MetroToggleSwitchButton" TargetType="{x:Type Controls:ToggleSwitchButton}" BasedOn="{StaticResource {x:Type Controls:ToggleSwitchButton}}" />
     <Style x:Key="MetroToggleSwitch" TargetType="{x:Type Controls:ToggleSwitch}" BasedOn="{StaticResource {x:Type Controls:ToggleSwitch}}" />
 
@@ -62,6 +71,7 @@
     <Style TargetType="GroupBox" BasedOn="{StaticResource MetroGroupBox}" />
     <Style TargetType="ListBox" BasedOn="{StaticResource MetroListBox}" />
     <Style TargetType="ListBoxItem" BasedOn="{StaticResource MetroListBoxItem}" />
+    <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource MetroGridViewColumnHeader}" />
     <Style TargetType="ListView" BasedOn="{StaticResource MetroListView}" />
     <Style TargetType="ListViewItem" BasedOn="{StaticResource MetroListViewItem}" />
     <Style TargetType="TreeView" BasedOn="{StaticResource MetroTreeView}" />
